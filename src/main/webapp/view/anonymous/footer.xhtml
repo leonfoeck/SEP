@@ -1,0 +1,21 @@
+<!-- Author: Leon Föckersperger -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets">
+    <h:body>
+        <div class="container ps-3 text-light">
+            <h:outputText styleClass="text-uppercase fs-5 me-4 ms-4" value="#{messages.f_links_headingFooter}" />
+
+            <h:link outcome="/view/anonymous/privacyPolicy" styleClass="link-light p-3"
+                    value="#{messages.f_links_privacyPolicy}"/>
+
+            <h:link outcome="/view/anonymous/contactUs" styleClass="link-light p-3"
+                    value="#{messages.f_links_contactUs}"/>
+            <h:link outcome="/view/anonymous/imprint" styleClass="link-light p-3"
+                    value="#{messages.f_links_imprint}"/>
+        </div>
+        <div class="text-center p-3 text-light border rounded-2 border-light-subtle me-5" >
+            <h:outputText value="#{messages.f_footer_copyright}"/>
+        </div>
+    </h:body>
+</ui:composition>

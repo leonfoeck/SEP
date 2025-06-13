@@ -1,0 +1,41 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="title">#{messages.f_pageTitle_imprint}</ui:define>
+
+    <ui:define name="childContent">
+        <h2>#{messages.f_heading_imprint}</h2>
+        <h:panelGroup layout="block" styleClass="container mt-3 w-50">
+            <h:panelGroup rendered="#{not userSession.userAdmin}" styleClass="text-start">
+                <h:outputText value="#{imprintBean.systemData.imprint}" escape="false" styleClass="text-start"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSession.userAdmin}">
+                <h:form id="imprint">
+                    <div class="mb-3">
+                        <h:inputTextarea value="#{imprintBean.systemData.imprint}"
+                                         rendered="#{not imprintBean.previewShown}"
+                                         styleClass="form-control">
+                            <f:passThroughAttribute name="rows" value="10"/>
+                        </h:inputTextarea>
+
+                        <h:panelGroup rendered="#{imprintBean.previewShown}" styleClass="text-start">
+                            <h:outputText value="#{imprintBean.systemData.imprint}" escape="false" styleClass="text-start"/>
+                        </h:panelGroup>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <h:commandButton action="#{imprintBean.togglePreview()}"
+                                         value="#{imprintBean.previewShown ? messages.f_button_editor_imprint : messages.f_button_preview_imprint}"
+                                         styleClass="btn btn-outline-secondary mx-3"/>
+                        <h:commandButton action="#{imprintBean.submitNewImprint()}"
+                                         value="#{messages.f_submit_imprint}"
+                                         styleClass="btn btn-primary mx-0"/>
+                    </div>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

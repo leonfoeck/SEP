@@ -1,0 +1,94 @@
+<ui:composition template="/resources/template/skeleton.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui">
+    <f:metadata>
+        <f:viewParam id="ad_param" name="id" value="#{advertisementDetailsBean.advertisement.id}"/>
+        <f:viewAction id="ad_action" action="#{advertisementDetailsBean.loadData()}"/>
+    </f:metadata>
+
+    <ui:param name="title" value="#{messages.f_pageTitle_adDetails}"/>
+    <ui:define name="childContent">
+        <div class="container text-start mt-4">
+            <h:link value="&lt; #{messages.f_go_back_adDetails}" outcome="/view/anonymous/allAdvertisements"/>
+            <h2>#{messages.f_heading_adDetails}</h2>
+            <div class="row">
+                <div class="col-xl-4 col-lg-12">
+                    <o:graphicImage class="ad-details-image mb-4"
+                                    value="#{advertisementDetailsBean.advertisement.image}"
+                                    dataURI="true"/>
+                </div>
+                <div class="col-xl-5 col-lg-7">
+                    <h4 id="ad_title">#{advertisementDetailsBean.advertisement.title} (#{advertisementDetailsBean.advertisement.cost}
+                        #{messages.f_talentPoints_adDetails})</h4>
+                    <h:outputText value="#{advertisementDetailsBean.advertisement.description}"/>
+
+                    <h:panelGroup rendered="#{not empty advertisementDetailsBean.advertisement.endDate}" class="fst-italic mb-3" layout="block">
+                        #{messages.f_availableFrom_adDetails}&#160;
+                        <h:outputText value="#{advertisementDetailsBean.advertisement.startDate}">
+                            <f:convertDateTime type="localDate"/>
+                        </h:outputText>
+                        #{messages.f_availableTo_adDetails}&#160;
+                        <h:outputText value="#{advertisementDetailsBean.advertisement.endDate}">
+                            <f:convertDateTime type="localDate"/>
+                        </h:outputText>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{empty advertisementDetailsBean.advertisement.endDate}" class="fst-italic mb-3" layout="block">
+                        #{messages.f_availableSince_adDetails}&#160;
+                        <h:outputText value="#{advertisementDetailsBean.advertisement.startDate}">
+                            <f:convertDateTime type="localDate" pattern="dd.MM.yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+
+                    <h:panelGroup  layout="block" styleClass="mb-3">
+                        <div class="fw-bold">#{messages.f_where_adDetails}</div>
+                        <h:panelGroup rendered="#{advertisementDetailsBean.advertisement.streetShown}" layout="block">
+                            <h:outputText value="#{advertisementDetailsBean.advertisement.street}"/>
+                        </h:panelGroup>
+                        <div id="ad_location">
+                            <h:outputText
+                                value="#{advertisementDetailsBean.advertisement.postalCode} #{advertisementDetailsBean.advertisement.city}"/>
+                        </div>
+                    </h:panelGroup>
+                </div>
+                <div class="col-xl-3 col-lg-5">
+                    <h:panelGroup id="contact-info" rendered="#{userSession.userLoggedIn}" layout="block" styleClass="mb-3">
+                        <div
+                            class="fw-bold">#{messages.f_provider_adDetails}: #{advertisementDetailsBean.adCreator.nickname}
+                            (#{advertisementDetailsBean.adCreator.talentPoints} #{messages.f_talentPoints_adDetails})
+                        </div>
+                        <div>
+                            <o:graphicImage styleClass="small-avatar-image my-2"
+                                            value="#{advertisementDetailsBean.adCreator.avatar}"
+                                            rendered="#{not empty advertisementDetailsBean.adCreator.avatar}"
+                                            dataURI="true"/>
+                        </div>
+                        <h:panelGroup id="creator_name" rendered="#{advertisementDetailsBean.advertisement.nameShown}" layout="block">
+                            <h:outputText value="#{advertisementDetailsBean.adCreator.firstname} #{advertisementDetailsBean.adCreator.lastname}"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="creator_email" layout="block">
+                            <h:outputText value="#{messages.f_email_adDetails}: #{advertisementDetailsBean.advertisement.email}"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="creator_phone"
+                                      rendered="#{advertisementDetailsBean.advertisement.phoneNumberShown and not empty
+                                      advertisementDetailsBean.advertisement.phoneNumber}">
+                            <h:outputText value="#{messages.f_phone_adDetails}: #{advertisementDetailsBean.advertisement.phoneNumber}"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup
+                        rendered="#{userSession.userLoggedIn
+                                    and userSession.currentUserId != advertisementDetailsBean.advertisement.userId
+                                    and advertisementDetailsBean.adActive}">
+                        <h:button id="writeRequestButton" value="#{messages.f_button_writeRequest_adDetails}" outcome="/view/registered/writeRequest"
+                                  styleClass="btn btn-outline-primary mx-0 mb-2" includeViewParams="true">
+                            <f:param name="id" value="#{advertisementDetailsBean.advertisement.id}"/>
+                        </h:button>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

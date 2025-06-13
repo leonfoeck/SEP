@@ -1,0 +1,95 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui">
+
+  <f:metadata>
+    <f:viewParam name="id" value="#{writeResponseBean.request.id}"/>
+    <f:viewAction action="#{writeResponseBean.loadData()}"/>
+  </f:metadata>
+
+  <ui:param name="title" value="#{messages.f_pageTitle_writeResponse}"/>
+
+  <ui:define name="childContent">
+    <h:panelGroup layout="block" styleClass="container mt-4 text-start w-75">
+      <h:link value="&lt; #{messages.f_go_back}" outcome="/view/registered/incomingRequests"/>
+      <h2 class="mb-3">
+        <h:outputText
+          value="#{messages.f_heading_writeResponse} #{writeResponseBean.advertisement.title} (#{writeResponseBean.advertisement.cost}
+                     #{messages.f_talentPoints_adDetails})"/>
+      </h2>
+      <h:panelGroup layout="block" styleClass="row">
+        <h:panelGroup styleClass="col-4">
+          <h4>Anfragesteller</h4>
+          <h:panelGroup layout="block">
+            <o:graphicImage styleClass="small-avatar-image my-2"
+                            value="#{writeResponseBean.requestCreator.avatar}"
+                            rendered="#{not empty writeResponseBean.requestCreator.avatar}"
+                            dataURI="true"/>
+          </h:panelGroup>
+          <div>
+            <h:outputText
+              value="#{writeResponseBean.requestCreator.nickname} (#{writeResponseBean.requestCreator.talentPoints}
+                             #{messages.f_talentPoints_writeResponse})"/>
+          </div>
+          <h:panelGroup layout="block" styleClass="fw-bold mt-3">
+            <h:outputText value="#{messages.f_contact_writeResponse}"/>
+          </h:panelGroup>
+          <div>
+            <h:outputText value="#{messages.f_email_writeResponse}: #{writeResponseBean.requestCreator.email}"/>
+          </div>
+          <h:panelGroup id="phonew" layout="block" rendered="#{not empty writeResponseBean.requestCreator.phone}">
+            <h:outputText value="#{messages.f_phone_writeResponse}: #{writeResponseBean.requestCreator.phone}"/>
+          </h:panelGroup>
+        </h:panelGroup>
+        <h:panelGroup styleClass="col-8">
+          <h:panelGroup layout="block" styleClass="pb-2">
+            <h:outputText value="#{writeResponseBean.requestCreator.nickname}"/>
+            <h:outputText value=" #{messages.f_wrote_writeResponse}:"/>
+          </h:panelGroup>
+          <div class="p-1 mb-4 border rounded-2 w-100">
+            <h:outputText value="#{writeResponseBean.request.request}"/>
+          </div>
+
+          <h:form id="writeResponse">
+            <h:panelGroup layout="block" styleClass="mb-3 w-100">
+              <h:outputLabel for="response"
+                             value="#{messages.f_yourResponse_writeResponse}:"
+                             styleClass="form-label"/>
+              <h:inputTextarea id="response"
+                               rows="6"
+                               value="#{writeResponseBean.request.response}"
+                               styleClass="form-control w-100"/>
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="d-flex justify-content-between">
+              <div>
+                <h:button value="#{messages.f_button_goToAdvertisement_writeResponse}"
+                          outcome="/view/anonymous/advertisementDetails"
+                          styleClass="btn btn-outline-secondary mx-0"
+                          includeViewParams="true">
+                  <f:param name="id" value="#{writeResponseBean.advertisement.id}"/>
+                </h:button>
+              </div>
+              <h:panelGroup id="buttons-panel" layout="block" rendered="#{empty writeResponseBean.request.accepted}">
+                <h:commandButton id="rejectButton"
+                                 value="#{writeResponseBean.emailDispatchedForMail ? messages.f_save_anyway : messages.f_button_rejectRequest}"
+                                 styleClass="btn btn-secondary mx-3"
+                                 action="#{writeResponseBean.reject()}">
+                  <f:ajax execute="@form" render="@form"/>
+                </h:commandButton>
+                <h:commandButton id="acceptButton"
+                                 value="#{writeResponseBean.emailDispatchedForMail ? messages.f_save_anyway : messages.f_button_acceptRequest}"
+                                 styleClass="btn btn-primary mx-0"
+                                 action="#{writeResponseBean.accept()}">
+                  <f:ajax execute="@form" render="@form"/>
+                </h:commandButton>
+              </h:panelGroup>
+            </h:panelGroup>
+          </h:form>
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:panelGroup>
+  </ui:define>
+</ui:composition>

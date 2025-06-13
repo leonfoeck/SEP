@@ -1,0 +1,353 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:comp="jakarta.faces.composite/components"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:param name="title" value="#{messages.f_user_edit_header}"/>
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{editUserBean.user.id}"/>
+            <f:viewAction action="#{editUserBean.loadData()}"/>
+        </f:metadata>
+    </ui:define>
+
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="row align-items-center justify-content-center">
+            <h:panelGroup layout="block" styleClass="col-md-10 py-5">
+                <h:form id="userInput" enctype="multipart/form-data" styleClass="mb-5"
+                        onkeypress="if (['Enter', 'NumpadEnter'].includes(event.key)) { document.getElementById('userInput:submit')
+                        .click(); return false; }">
+                    <h:panelGroup layout="block" styleClass="row">
+                        <h:panelGroup layout="block" styleClass="col-md-6">
+                            <o:graphicImage id="avatar" styleClass="mb-5 img-fluid rounded-2 border shadow-sm vh-75"
+                                            value="#{editUserBean.user.avatar}" dataURI="true">
+                                <f:passThroughAttribute name="style" value="width: 256px"/>
+                            </o:graphicImage>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-md-6 align-self-center">
+                            <h:panelGroup layout="block" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="mb-3">
+                                    <h:outputLabel for="avatarInput" styleClass="mb-3">
+                                        <h:outputText value="#{messages.f_profile_select_avatar}" for="avatarInput"/>
+                                    </h:outputLabel>
+                                    <o:inputFile id="avatarInput" value="#{editUserBean.avatarInputPart}" styleClass="form-control"
+                                                 accept="image/png,image/jpeg" acceptMessage="#{messages.m_avatar_accept_message}">
+                                        <f:validator validatorId="avatarValidator"/>
+                                        <f:ajax render="userInput:avatar userInput:avatarInputMessage"/>
+                                    </o:inputFile>
+                                    <h:message for="avatarInput" id="avatarInputMessage" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="row">
+                                <h:panelGroup styleClass="mb-3 d-flex justify-content-center">
+                                    <h:commandButton id="deleteAvatar" action="#{editUserBean.deleteAvatar()}" value="#{messages.f_delete_avatar}"
+                                                     styleClass="btn btn-primary w-75" immediate="true"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="nick" value="#{editUserBean.user.nickname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="255" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_nick}"/>
+                                        <f:validateLength maximum="255"/>
+                                        <f:validator validatorId="nicknameFormatValidator"/>
+                                        <f:validator validatorId="nicknameUniqueValidator"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="nick">
+                                        <h:outputText value="#{messages.f_nick}" for="nick"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="nick"/>
+                                    </h:outputLabel>
+                                    <h:message for="nick" id="nick-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="talentPoints" value="#{editUserBean.user.talentPoints}" maxlength="9" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_phone}"/>
+                                        <f:passThroughAttribute name="onkeypress"
+                                                                value="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
+                                        <f:validateLength maximum="9"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="talentPoints">
+                                        <h:outputText value="#{messages.f_talent_points}" for="talentPoints"/>
+                                    </h:outputLabel>
+                                    <h:message for="talentPoints" id="talentPoints-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-12">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="email" value="#{editUserBean.user.email}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="70" styleClass="form-control">
+                                        <f:ajax event="change" render="submitBox" listener="#{editUserBean.emailInputUpdated()}"/>
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_email}"/>
+                                        <f:attribute name="originalMail" value="#{editUserBean.originalMail}"/>
+                                        <f:validateLength maximum="70"/>
+                                        <f:validator validatorId="emailFormatValidator"/>
+                                        <f:validator validatorId="emailUniqueValidator"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="email">
+                                        <h:outputText value="#{messages.f_email}" for="email"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="email"/>
+                                    </h:outputLabel>
+                                    <h:message for="email" id="email-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputSecret id="password" value="#{editUserBean.passwordInput.password}" maxlength="255"
+                                                   styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_password}"/>
+                                        <f:validateLength maximum="255"/>
+                                    </h:inputSecret>
+                                    <h:outputLabel for="password">
+                                        <h:outputText value="#{messages.f_password}" for="password"/>
+                                    </h:outputLabel>
+                                    <h:message for="password" id="password-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputSecret id="repetition" value="#{editUserBean.passwordInput.repetition}" maxlength="255"
+                                                   styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_repetition}"/>
+                                        <f:validateLength maximum="255"/>
+                                    </h:inputSecret>
+                                    <h:outputLabel for="repetition">
+                                        <h:outputText value="#{messages.f_repetition}" for="repetition"/>
+                                    </h:outputLabel>
+                                    <h:message for="repetition" id="repetition-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="firstname" value="#{editUserBean.user.firstname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_firstname}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="firstname">
+                                        <h:outputText value="#{messages.f_firstname}" for="firstname"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="firstname"/>
+                                    </h:outputLabel>
+                                    <h:message for="firstname" id="firstname-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="lastname" value="#{editUserBean.user.lastname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_lastname}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="lastname">
+                                        <h:outputText value="#{messages.f_lastname}" for="lastname"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="lastname"/>
+                                    </h:outputLabel>
+                                    <h:message for="lastname" id="lastname-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-8">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="street" value="#{editUserBean.user.street}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_street}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="street">
+                                        <h:outputText value="#{messages.f_street}" for="street"/>
+                                    </h:outputLabel>
+                                    <h:message for="street" id="street-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="houseNumber" value="#{editUserBean.user.houseNumber}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_houseNumber}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="houseNumber">
+                                        <h:outputText value="#{messages.f_houseNumber}" for="houseNumber"/>
+                                    </h:outputLabel>
+                                    <h:message for="houseNumber" id="houseNumber-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="postalCode" value="#{editUserBean.user.postalCode}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_postalCode}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="postalCode">
+                                        <h:outputText value="#{messages.f_postalCode}" for="postalCode"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="postalCode"/>
+                                    </h:outputLabel>
+                                    <h:message for="postalCode" id="postalCode-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="city" value="#{editUserBean.user.city}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="150" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_city}"/>
+                                        <f:validateLength maximum="150"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="city">
+                                        <h:outputText value="#{messages.f_city}" for="city"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="city"/>
+                                    </h:outputLabel>
+                                    <h:message for="city" id="city-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="country" value="#{editUserBean.user.country}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_country}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="country">
+                                        <h:outputText value="#{messages.f_country}" for="country"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="country"/>
+                                    </h:outputLabel>
+                                    <h:message for="country" id="country-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-12">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-5">
+                                    <h:inputText id="phone" value="#{editUserBean.user.phone}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_phone}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="phone">
+                                        <h:outputText value="#{messages.f_phone}" for="phone"/>
+                                    </h:outputLabel>
+                                    <h:message for="phone" id="phone-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row mb-3">
+                            <h:panelGroup layout="block" styleClass="col-md-6 align-self-center ">
+                                <h:panelGroup layout="block" styleClass="row ms-4 me-4  border rounded-2">
+                                    <h:panelGroup layout="block" styleClass="form-check form-switch mb-3 mt-3">
+                                        <h:outputLabel for="emailVerified" styleClass="form-check-label">
+                                            <h:outputText value="#{messages.f_email_verified}" for="emailVerified"/>
+                                        </h:outputLabel>
+                                        <h:selectBooleanCheckbox id="emailVerified" styleClass="form-check-input ms-3" type="checkbox"
+                                                                 value="#{editUserBean.user.emailVerified}">
+                                            <f:passThroughAttribute name="style" value="transform: scale(1.5);"/>
+                                        </h:selectBooleanCheckbox>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6 align-self-center"
+                                          rendered="#{editUserBean.systemData.adminConfirmationRequiredForRegistration}">
+                                <h:panelGroup layout="block" styleClass="row ms-4 me-4 border rounded-2">
+                                    <h:panelGroup layout="block" styleClass="form-check form-switch mb-3 mt-3">
+                                        <h:outputLabel for="adminVerified" styleClass="form-check-label">
+                                            <h:outputText value="#{messages.f_admin_verified}" for="adminVerified"/>
+                                        </h:outputLabel>
+                                        <h:selectBooleanCheckbox id="adminVerified" styleClass="form-check-input ms-3" type="checkbox"
+                                                                 value="#{editUserBean.user.adminVerified}">
+                                            <f:passThroughAttribute name="style" value="transform: scale(1.5);"/>
+                                        </h:selectBooleanCheckbox>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6 align-self-center p-3 mt-4 mb-4">
+                                <h:panelGroup layout="block" styleClass="row ms-4 me-4 border rounded-2">
+                                    <h:panelGroup layout="block" styleClass="form-check form-switch mt-3 mb-3">
+                                        <h:outputLabel for="isAdmin" styleClass="form-check-label">
+                                            <h:outputText value="#{messages.f_admin_status}" for="isAdmin"/>
+                                        </h:outputLabel>
+                                        <h:selectBooleanCheckbox id="isAdmin" styleClass="form-check-input ms-3" type="checkbox"
+                                                                 value="#{editUserBean.user.admin}">
+                                            <f:passThroughAttribute name="style" value="transform: scale(1.5);"/>
+                                            <f:ajax render="adminPasswordBox adminPasswordText"/>
+                                        </h:selectBooleanCheckbox>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6 p-3" id="adminPasswordBox">
+                                <h:panelGroup layout="block" styleClass="row" id="adminPasswordText" rendered="#{editUserBean.adminPasswordRequired}">
+                                    <h:outputLabel>
+                                        <h:outputText value="#{messages.f_password_needed_for_confirmation}"
+                                                      styleClass="text-danger user-select-none"/>
+                                    </h:outputLabel>
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" styleClass="form-floating" rendered="#{editUserBean.adminPasswordRequired}">
+                                    <h:inputSecret id="confirmationPassword" value="#{editUserBean.adminPassword.password}"
+                                                   required="#{editUserBean.adminPasswordRequired}" requiredMessage="#{messages.v_input_required}"
+                                                   maxlength="255" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_admin_passwort}"/>
+                                        <f:validateLength maximum="255"/>
+                                    </h:inputSecret>
+                                    <h:outputLabel for="confirmationPassword">
+                                        <h:outputText value="#{messages.f_admin_passwort}" for="confirmationPassword"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="confirmationPassword"
+                                                      rendered="#{editUserBean.adminPasswordRequired}"/>
+                                    </h:outputLabel>
+                                    <h:message for="confirmationPassword" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" id="submitBox" styleClass="mb-3 d-flex justify-content-center">
+                            <h:commandButton id="submit" action="#{editUserBean.submit}"
+                                             value="#{editUserBean.emailDispatched ? messages.f_save_anyway : ((editUserBean.user.id == 0)
+                                              ? messages.f_create : messages.f_profile_save)}"
+                                             styleClass="btn btn-primary w-50 p-3">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
+                            <comp:confirmButton id="deleteUserAsAdminButton" forId="deleteDialog" value="#{messages.f_profile_delete}"
+                                                styleClass="btn btn-outline-danger w-50 me-4" rendered="#{editUserBean.user.id != 0}"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
+
+        <comp:confirmDialog id="deleteDialog"
+                            header="#{messages.f_confirmheader_delete_profile}"
+                            accept="#{editUserBean.deleteUser()}"
+                            rejectLabel="#{messages.f_profile_button_abort}"
+                            acceptLabel="#{messages.f_profile_delete}">
+            #{editUserBean.deleteWarning}
+        </comp:confirmDialog>
+
+
+    </ui:define>
+
+
+</ui:composition>

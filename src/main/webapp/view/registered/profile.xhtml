@@ -1,0 +1,268 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:comp="jakarta.faces.composite/components"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:param name="title" value="#{messages.f_profile}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="row align-items-center justify-content-center">
+            <h:panelGroup layout="block" styleClass="col-md-10 py-5">
+                <h:form id="userInput" enctype="multipart/form-data" styleClass="mb-5"
+                        onkeypress="if (['Enter', 'NumpadEnter'].includes(event.key)) { document.getElementById('userInput:submit').click();
+                            return false; }">
+                    <h:panelGroup layout="block" styleClass="row">
+                        <h:panelGroup layout="block" styleClass="col-md-6">
+                            <o:graphicImage id="avatar" styleClass="mb-5 img-fluid rounded-2 border shadow-sm vh-75"
+                                            value="#{profileBean.user.avatar}" dataURI="true">
+                                <f:passThroughAttribute name="style" value="width: 256px"/>
+                            </o:graphicImage>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-md-6 align-self-center">
+                            <h:panelGroup layout="block" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="mb-3">
+                                    <h:outputLabel for="avatarInput" styleClass="mb-3">
+                                        <h:outputText value="#{messages.f_profile_select_avatar}" for="avatarInput"/>
+                                    </h:outputLabel>
+                                    <o:inputFile id="avatarInput" value="#{profileBean.avatarInputPart}" styleClass="form-control"
+                                                 accept="image/png,image/jpeg" acceptMessage="#{messages.m_avatar_accept_message}">
+                                        <f:validator validatorId="avatarValidator"/>
+                                        <f:ajax render="userInput:avatar userInput:avatarInputMessage"/>
+                                    </o:inputFile>
+                                    <h:message for="avatarInput" id="avatarInputMessage" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="row">
+                                <h:panelGroup styleClass="mb-3 d-flex justify-content-center">
+                                    <h:commandButton id="deleteAvatar" action="#{profileBean.deleteAvatar()}" value="#{messages.f_delete_avatar}"
+                                                     styleClass="btn btn-primary w-75" immediate="true"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="nick" value="#{profileBean.user.nickname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="255" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_nick}"/>
+                                        <f:validateLength maximum="255"/>
+                                        <f:validator validatorId="nicknameFormatValidator"/>
+                                        <f:validator validatorId="nicknameUniqueValidator"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="nick">
+                                        <h:outputText value="#{messages.f_nick}" for="nick"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="nick"/>
+                                    </h:outputLabel>
+                                    <h:message for="nick" id="nick-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="mb-3 justify-content-center">
+                                    <h:panelGroup layout="block" styleClass="p-3">
+                                        <h:outputLabel value="#{messages.f_talent_points}:"/>
+                                        <h:outputText value="#{profileBean.user.talentPoints}" styleClass="fw-bold ms-5"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-12">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="email" value="#{profileBean.user.email}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="70" styleClass="form-control">
+                                        <f:ajax event="change" render="submitBox" listener="#{profileBean.emailInputUpdated()}"/>
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_email}"/>
+                                        <f:attribute name="originalMail" value="#{profileBean.originalMail}"/>
+                                        <f:validateLength maximum="70"/>
+                                        <f:validator validatorId="emailFormatValidator"/>
+                                        <f:validator validatorId="emailUniqueValidator"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="email">
+                                        <h:outputText value="#{messages.f_email}" for="email"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="email"/>
+                                    </h:outputLabel>
+                                    <h:message for="email" id="email-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputSecret id="password" value="#{profileBean.passwordInput.password}" maxlength="255"
+                                                   styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_password}"/>
+                                        <f:validateLength maximum="255"/>
+                                    </h:inputSecret>
+                                    <h:outputLabel for="password">
+                                        <h:outputText value="#{messages.f_password}" for="password"/>
+                                    </h:outputLabel>
+                                    <h:message for="password" id="password-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputSecret id="repetition" value="#{profileBean.passwordInput.repetition}" maxlength="255"
+                                                   styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_repetition}"/>
+                                        <f:validateLength maximum="255"/>
+                                    </h:inputSecret>
+                                    <h:outputLabel for="repetition">
+                                        <h:outputText value="#{messages.f_repetition}" for="repetition"/>
+                                    </h:outputLabel>
+                                    <h:message for="repetition" id="repetition-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="firstname" value="#{profileBean.user.firstname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_firstname}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="firstname">
+                                        <h:outputText value="#{messages.f_firstname}" for="firstname"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="firstname"/>
+                                    </h:outputLabel>
+                                    <h:message for="firstname" id="firstname-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="lastname" value="#{profileBean.user.lastname}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_lastname}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="lastname">
+                                        <h:outputText value="#{messages.f_lastname}" for="lastname"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="lastname"/>
+                                    </h:outputLabel>
+                                    <h:message for="lastname" id="lastname-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-8">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="street" value="#{profileBean.user.street}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_street}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="street">
+                                        <h:outputText value="#{messages.f_street}" for="street"/>
+                                    </h:outputLabel>
+                                    <h:message for="street" id="street-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="houseNumber" value="#{profileBean.user.houseNumber}" maxlength="50" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_houseNumber}"/>
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="houseNumber">
+                                        <h:outputText value="#{messages.f_houseNumber}" for="houseNumber"/>
+                                    </h:outputLabel>
+                                    <h:message for="houseNumber" id="houseNumber-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="postalCode" value="#{profileBean.user.postalCode}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_postalCode}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="postalCode">
+                                        <h:outputText value="#{messages.f_postalCode}" for="postalCode"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="postalCode"/>
+                                    </h:outputLabel>
+                                    <h:message for="postalCode" id="postalCode-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="city" value="#{profileBean.user.city}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="150" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_city}"/>
+                                        <f:validateLength maximum="150"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="city">
+                                        <h:outputText value="#{messages.f_city}" for="city"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="city"/>
+                                    </h:outputLabel>
+                                    <h:message for="city" id="city-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-4">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="country" value="#{profileBean.user.country}" required="true"
+                                                 requiredMessage="#{messages.v_input_required}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_country}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="country">
+                                        <h:outputText value="#{messages.f_country}" for="country"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="country"/>
+                                    </h:outputLabel>
+                                    <h:message for="country" id="country-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-12">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-5">
+                                    <h:inputText id="phone" value="#{profileBean.user.phone}" maxlength="25" styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_phone}"/>
+                                        <f:validateLength maximum="25"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="phone">
+                                        <h:outputText value="#{messages.f_phone}" for="phone"/>
+                                    </h:outputLabel>
+                                    <h:message for="phone" id="phone-message" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" id="submitBox" styleClass="mb-3 d-flex justify-content-center">
+                            <h:commandButton id="submit" action="#{profileBean.submit}"
+                                             value="#{profileBean.emailDispatched ? messages.f_save_anyway : messages.f_profile_save}"
+                                             styleClass="btn btn-primary w-50 p-3">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
+                            <comp:confirmButton id="deleteProfileButton" forId="deleteDialog" value="#{messages.f_profile_delete}"
+                                                styleClass="btn btn-outline-danger w-50 me-4"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
+
+        <comp:confirmDialog id="deleteDialog"
+                            header="#{messages.f_confirmheader_delete_profile}"
+                            accept="#{profileBean.deleteUser()}"
+                            rejectLabel="#{messages.f_profile_button_abort}"
+                            acceptLabel="#{messages.f_profile_delete}">
+            #{profileBean.deleteWarning}
+        </comp:confirmDialog>
+
+
+    </ui:define>
+
+
+</ui:composition>

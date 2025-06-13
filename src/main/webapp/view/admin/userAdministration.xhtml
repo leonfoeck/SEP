@@ -1,0 +1,73 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:comp="jakarta.faces.composite/components"
+                xmlns:f="jakarta.faces.core"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:param name="title" value="#{messages.f_user_administration_header}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="header-container">
+            <h:outputText value="#{messages.f_user_administration_header}" styleClass="h2"/>
+            <h:panelGroup layout="block" styleClass="button-container">
+                <h:button id="newUser" value="#{messages.f_create_user_button}"
+                          outcome="/view/admin/editUser.xhtml?faces-redirect=true" styleClass="btn btn-primary"/>
+            </h:panelGroup>
+        </h:panelGroup>
+        <h:form id="users">
+            <comp:dynamicDataTable id="table" dataModel="#{userAdministrationBean.dataModel}">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{messages.f_imageHeader}" styleClass="tableHeader"/>
+                    </f:facet>
+                    <o:graphicImage styleClass="img-fluid rounded-2 border shadow-sm vh-25" value="#{item.avatar}" dataURI="true">
+                        <f:passThroughAttribute name="style" value="width: 64px"/>
+                    </o:graphicImage>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="nick" columnName="#{messages.f_nick}"
+                                               columnIdentifier="nickname" styleClass="tableHeader"/>
+                    </f:facet>
+                    <h:link value="#{item.nickname}"
+                            outcome="/view/admin/editUser.xhtml?faces-redirect=true"
+                            includeViewParams="true" id="id">
+                        <f:param name="id" value="#{item.id}"/>
+                    </h:link>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="email" columnName="#{messages.f_email}"
+                                               columnIdentifier="email_address" styleClass="tableHeader"/>
+                    </f:facet>
+                    <h:outputText value="#{item.email}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="talentPoints" columnName="#{messages.f_talent_points}"
+                                               columnIdentifier="talent_points" styleClass="tableHeader"/>
+                    </f:facet>
+                    <h:outputText value="#{item.talentPoints}"/>
+                </h:column>
+                <h:column rendered="#{userAdministrationBean.systemData.adminConfirmationRequiredForRegistration}">
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="has_admin_verified" columnName="#{messages.f_admin_verified}"
+                                               columnIdentifier="has_admin_verified" styleClass="tableHeader"/>
+                    </f:facet>
+                    <h:outputText value="#{item.adminVerified ? messages.f_verified : messages.f_not_verified}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="email_verified" columnName="#{messages.f_email_verified}"
+                                               columnIdentifier="is_email_verified" styleClass="tableHeader"/>
+                    </f:facet>
+                    <h:outputText value="#{item.emailVerified ? messages.f_verified : messages.f_not_verified}"/>
+                </h:column>
+            </comp:dynamicDataTable>
+        </h:form>
+    </ui:define>
+
+
+</ui:composition>

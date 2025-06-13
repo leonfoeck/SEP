@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Author: Leon Föckersperger -->
+<!DOCTYPE html>
+<html lang="de"
+      class="h-100"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+
+
+<h:head>
+    <meta charset="utf-8"/>
+    <title>#{title}</title>
+    <h:outputStylesheet name="css/bootstrap/bootstrap.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-grid.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-reboot.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-utilities.css"/>
+    <h:outputStylesheet name="#{headerBean.systemData.cssStylesheetName}" library="css"/>
+    <h:outputScript name="script/bootstrap/bootstrap.bundle.js"/>
+
+</h:head>
+
+<h:body id="main" class="d-flex flex-column h-100">
+    <header class="mb-lg-5">
+        <nav class="navbar navbar-expand-md navbar-light fixed-top bg-body-secondary navbar-custom">
+            <ui:include id="header" src="/view/anonymous/header.xhtml"/>
+        </nav>
+    </header>
+
+    <main class="flex-shrink-0">
+        <h:panelGroup layout="block" styleClass="row justify-content-center">
+            <h:messages id="messages" globalOnly="true" styleClass="messages h3 text-center justify-content-center" layout="table"/>
+        </h:panelGroup>
+        <ui:insert name="childContent" id="content"/>
+        <ui:insert name="metadata" id="childMetadata"/>
+        <aside>
+            <ui:include id="help" src="/view/anonymous/help.xhtml"/>
+        </aside>
+    </main>
+    <footer class="footer mt-auto py-3 bg-dark">
+        <ui:include id="footer" src="/view/anonymous/footer.xhtml"/>
+    </footer>
+
+
+</h:body>
+
+</html>

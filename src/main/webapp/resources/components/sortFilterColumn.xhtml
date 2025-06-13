@@ -1,0 +1,25 @@
+<!-- Author: Leon Föckersperger -->
+<ui:composition xmlns:h="jakarta.faces.html" xmlns:ui="jakarta.faces.facelets"
+                xmlns:cc="jakarta.faces.composite">
+    <cc:interface>
+        <cc:attribute name="columnName" type="java.lang.String" required="true"/>
+        <cc:attribute name="columnIdentifier" type="java.lang.String" required="true"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGroup layout="block">
+            <h:commandLink id="sortLink" action="#{cc.parent.attrs.dataModel.setSorting(cc.attrs.columnIdentifier)}"
+                           styleClass="sort-header">
+                <h:outputText value="#{cc.attrs.columnName}"/>
+                <!-- Dynamisches Icon basierend auf dem Sortierzustand -->
+                <h:outputText value="&#9650;"
+                              rendered="#{cc.parent.attrs.dataModel.pagination.sortBy eq cc.attrs.columnIdentifier and
+                              cc.parent.attrs.dataModel.pagination.ascending}"/>
+                <h:outputText value="&#9660;"
+                              rendered="#{cc.parent.attrs.dataModel.pagination.sortBy eq cc.attrs.columnIdentifier and
+                              not cc.parent.attrs.dataModel.pagination.ascending}"/>
+            </h:commandLink>
+            <br/>
+            <h:inputText id="#{cc.attrs.columnIdentifier}" value="#{cc.parent.attrs.dataModel.pagination.filters[cc.attrs.columnIdentifier]}"/>
+        </h:panelGroup>
+    </cc:implementation>
+</ui:composition>

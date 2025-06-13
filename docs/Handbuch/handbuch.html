@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Benutzerhandbuch</title>
+    <style>
+        body {
+            margin: 2rem 4rem 1rem;
+            font-size: 16px;
+        }
+        .center {
+            text-align: center;
+        }
+        .cap {
+            font-variant: small-caps;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>TalentTauscher – Benutzerhandbuch</h1>
+        <p>23. April 2024</p>
+
+        <p>
+            David Sturm<br>
+            Jakob Edmaier<br>
+            Leon Föckersperger<br>
+            Mike Karl
+        </p>
+    </div>
+
+    <h2>1 Alle Benutzer / All Users</h2>
+    <p class="cap">Autor: Jakob Edmaier</p>
+    <h3>1.1 Startseite und Suche / Landing page and search</h3>
+    <p>
+        Hier sehen Sie eine Auswahl von Anzeigen.
+        Damit die Applikation performant bleibt, wird Paginierung verwendet, d.h. es wird immer nur eine begrenzte Anzahl an Anzeigen geladen.
+        Wenn Sie auf "Nächste Seite" klicken, werden weitere Anzeigen geladen.
+        Um die angezeigten Anzeigen einzuschränken, können Sie in der Seitenleiste links eine Kategorie auswählen.
+        Mithilfe der Suchfunktion könne Sie nach einem Stichwort suchen, das im Titel der Anzeigen enthalten sein soll.
+        Außerdem können Sie die Postleitzahlen der Anzeigen so einschränken, dass sie mit einem bestimmten Präfix beginnen.
+        Falls Sie bereits ein Benutzerkonto haben, können Sie durch einen Klick auf "Login" zur Login-Seite gelangen.
+        Falls nicht, können Sie durch einen Klick auf "Registrieren" ein Benutzerkonto erstellen.
+    </p>
+    <p>
+        Here you can see a selection of advertisements.
+        Pagination is used to ensure that the application remains performant, i.e., only a limited number of ads are loaded at any one time.
+        If you click on "Next page", more ads are loaded.
+        To filter the ads displayed, you can select a category in the sidebar on the left.
+        You can use the search function to search for a keyword to be included in the title of the ads.
+        You can also restrict the zip codes of the ads so that they begin with a specific prefix.
+        If you already have a user account, you can access the login page by clicking on "Login".
+        If not, you can create a user account by clicking on "Register".
+    </p>
+
+    <h3>1.2 Anzeigendetails / Advertisement details</h3>
+    <p>
+        Sie befinden sich in der Detailansicht einer Anzeige.
+        Bitte melden Sie sich an oder erstellen ein Nutzerkonto, um die Leistung anzufragen oder Kontakt mit dem Ersteller aufzunehmen.
+    </p>
+    <p>
+        You are in the detailed view of an advertisement.
+        Please log in or create a user account to request the service or contact the creator.
+    </p>
+
+    <h3>1.3 Login</h3>
+    <p>
+        Falls Sie bereits ein Nutzerkonto haben, können Sie sich hier anmelden.
+        Geben Sie dazu bitte ihren Benutzernamen oder Ihre Email sowie Ihr Passwort an.
+        Falls Sie Ihr Passwort vergessen haben, können Sie mit einem Klick auf "Passwort vergessen" Ihr Passwort zurücksetzen.
+        Falls Sie noch kein Benutzerkonto haben, können Sie durch einen Klick auf "Registrieren" eines erstellen.
+    </p>
+    <p>
+        If you already have a user account, you can log in here.
+        Please enter your username or your e-mail address and your password.
+        If you have forgotten your password, you can reset your password by clicking on "Forgot password".
+        If you do not yet have a user account, you can create one by clicking on "Register".
+    </p>
+
+    <h3>1.4 Registrierung / Registration</h3>
+    <p>
+        Hier können Sie ein neues Benutzerkonto anlegen.
+        Füllen Sie dazu bitte alle erforderlichen Felder aus.
+        Wenn Sie auf "Erstellen" klicken, wird an die angegebene E-Mail-Adresse eine E-Mail gesendet, um die Adresse zu verifizieren.
+        Sie können Ihre Registrierung abschließen, indem Sie den Link in der E-Mail öffnen.
+        Bei einer erfolgreichen Anmeldung erhalten Sie ein Startguthaben von 50 Talentpunkten.
+        Falls Sie bereits ein Benutzerkonto haben, können Sie sich durch einen Klick auf "Login" anmelden.
+    </p>
+    <p>
+        You can create a new user account here.
+        Please fill in all the required fields.
+        When you click on "Create", an e-mail will be sent to the e-mail address provided to verify the address.
+        You can complete your registration by opening the link in the e-mail.
+        If you register successfully you will receive an starting credit of 50 talent points.
+        If you already have a user account, you can log in by clicking on "Login".
+    </p>
+
+    <h3>1.5 Passwort zurücksetzen / Reset password</h3>
+    <p>
+        Wenn Sie Ihr Passwort vergessen haben, können Sie es hier zurücksetzen.
+        Geben Sie dazu bitte Ihren Nutzernamen oder die E-Mail-Adresse, mit der Sie sich registriert haben, ein.
+        Sie erhalten dann eine E-Mail vom System.
+        Indem Sie den Link in der E-Mail öffnen, gelangen Sie auf eine Seite, auf der Sie ein neues Passwort vergeben können.
+        Wenn nicht innerhalb von 3 Tagen ein neues Passwort wählen, läuft der Link in der E-Mail ab.
+        Sie können jedoch jederzeit hier eine neue E-Mail anfordern.
+    </p>
+    <p>
+        If you have forgotten your password, you can reset it here.
+        To do this, please enter your username or the e-mail with which address you registered.
+        You will then receive an email from the application.
+        By opening the link in the e-mail you will be taken to a page where you can set a new password.
+        If you do not choose a new password within 3 days, the link in the email will expire.
+        However, you can request a new e-mail here at any time.
+    </p>
+
+    <h2>2 Authentifizierte Benutzer / Authenticated users</h2>
+    <p class="cap">Autor: Mike Karl</p>
+    <h3>2.1 Beanspruchte Anzeigen / Claimed Advertisements </h3>
+        <p>
+            Hier können Sie alle Ihre beanspruchten Anzeigen einsehen. Zusätzlich sehen Sie hier die Anfragen 
+            die Sie gestellt haben, und gegebenenfalls die Antworten die Sie darauf erhielten.
+
+            Nutzen Sie die Filtermöglichkeiten am oberen Rand der Seite um nach der gewünschten Anzeige zu suchen, 
+            oder navigieren Sie durch die Kategorien um zu Ihrem Ziel zu gelangen.
+        </p>
+        <p>
+            Here you can view all your claimed ads. You can also see the requests
+            that you asked here and, if applicable, the answers you received.
+
+            Use the filter options at the top of the page to search for the ad you want,
+            or navigate through the categories to get to your destination.
+        </p>
+    <h3>2.2 Erstellte Anzeigen / Created Advertisements </h3>
+        <p>
+            Hier können Sie alle Ihre erstellten Anzeigen einsehen.
+
+            Nutzen Sie die Filtermöglichkeiten am oberen Rand der Seite um nach der gewünschten Anzeige zu suchen, 
+            oder navigieren Sie durch die Kategorien um zu Ihrem Ziel zu gelangen.
+        </p>
+        <p>
+            Here you can view all your created ads.
+
+            Use the filter options at the top of the page to search for the ad you want,
+            or navigate through the categories to get to your destination.
+        </p>
+    <h3>2.3 Anzeige erstellen/bearbeiten/löschen / Create/edit/delete Advertisement </h3>
+        <p>
+            Hier können Sie eine neue Anzeige erstellen, oder eine bereits vorhandene Anzeige bearbeiten bzw. löschen. 
+            Bearbeiten Sie alle Textfelder, bis Sie mit Ihrer Anzeige zufrieden sind, und klicken Sie auf Speichern. 
+            Die Anzeige wird dann automatisch online gestellt und Sie werden automatisch zur Übersicht über alle 
+            erstellten Anzeigen weitergeleitet. Sollte Ihnen Ihre Anzeige nicht gefallen, oder Sie wollen die Anzeige 
+            aus anderen Gründen nicht mehr anbieten, klicken Sie auf Löschen.
+        </p>
+        <p>
+            Here you can create a new ad or edit or delete an existing ad.
+            Edit all text fields until you're happy with your display and click Save.
+            The ad will then be automatically placed online and you will automatically be given an overview of all of the
+            created ads. If you don't like your ad or if you no longer want to offer it for other reasons, click Delete.
+        </p>
+    <h3>2.4 Mein Profil / My Profile </h3>
+        <p>
+            Auf Ihrem Profil können Sie alle Ihre Persönlichen Daten einsehen und ändern. Um Ihre Daten zu ändern, klicken Sie auf eines der 
+            Textfelder und ändern Sie den Inhalt. Anschließend klicken Sie auf Speichern um die Änderungen anzunehmen.
+        </p>
+        <p>
+            You can view and change all of your personal data on your profile. To change your details, click on one of the
+            Text fields and change the content. Then click Save to accept the changes.
+        </p>
+    <h3>2.5 Anfrage schreiben / Write Inquiry </h3>
+        <p>
+            Hier können Sie eine Anfrage für die gewünschte Anzeige stellen. Beachten Sie dass bei Annahme der Anfrage durch den Ersteller der Anzeige, 
+            automatisch Ihr Talentpunkte Konto belastet wird, und Ihre Kontaktdaten dem Ersteller der Anzeige übermittelt werden.
+
+            Es wird Ihnen die Möglichkeit geboten, einen Freitext zu verfassen, der der Anfrage angehängt wird. Hier haben Sie die Möglichkeit 
+            zusätzliche Fragen zu stellen, oder dem Ersteller der Anzeige etwas mitzuteilen. Achten Sie auf einen höflichen Umgang, 
+            und vermeiden Sie sensitive Daten preiszugeben.
+        </p>
+        <p>
+            Here you can submit a request for the desired ad. Please note that if the request is accepted by the creator of the ad,
+            Your talent points account will be automatically debited and your contact details will be sent to the creator of the ad.
+
+            You will be given the opportunity to write a free text that will be attached to the request. Here is you can
+            ask additional questions or tell the creator of the ad something. Make sure you are polite,
+            and avoid revealing sensitive data.
+        </p>
+    <h3>2.6 Eingegangene Anfragen / Incoming Inquiries </h3>
+        <p>
+            Hier sehen Sie alle eingegangenen Anfragen auf Ihre Anzeigen, sowie Ihre Antworten. 
+            Hier können Sie entscheiden ob Sie eine Anfrage annehmen oder ablehnen. Sollten Sie sich dazu entscheiden die Anfrage abzulehnen, 
+            sollten Sie die Anfrage dennoch beantworten.
+            
+            Nutzen Sie die Filtermöglichkeiten am oberen Rand der Seite um nach der gewünschten Anzeige zu suchen, 
+            oder navigieren Sie durch die Kategorien um zu Ihrem Ziel zu gelangen.
+        </p>
+        <p>
+            Here you can see all the requests received for your ads, as well as your answers.
+            Here you can decide whether to accept or reject a request. If you decide to reject the request,
+            you should still answer it.
+            
+            Use the filter options at the top of the page to search for the ad you want,
+            or navigate through the categories to get to your destination.
+        </p>
+    <h3>2.7 Anfrage beantworten / Answer Inquiry </h3>
+        <p>
+            Hier können Sie auf eine Anfrage antworten. Beachten Sie dass bei Annahme der Anfrage, 
+            automatisch Ihre Kontaktdaten dem Anfragesteller übermittelt werden.
+
+            Es wird Ihnen die Möglichkeit geboten, einen Freitext zu verfassen, der der Antwort angehängt wird. Hier haben Sie die Möglichkeit 
+            zusätzliche Fragen zu stellen, oder den Grund Ihres Ablehnens mitzuteilen. Achten Sie auf einen höflichen Umgang, 
+            und vermeiden Sie sensitive Daten preiszugeben.
+        </p>
+        <p>
+            You can respond to an inquiry here. Please note that if you accept the request,
+            Your contact details are automatically sent to the person making the request.
+
+            You will be given the opportunity to write a free text that will be appended to the answer. Here is you can
+            ask additional questions or state the reason for your decline. Make sure you are polite,
+            and avoid revealing sensitive data.
+        </p>
+    <h3>2.8 Anzeigendetails / Advertisement details</h3>
+        <p>
+            Hier sehen Sie alle Information die diese Anzeige betreffen. Es werden Ihnen alle Kontaktdaten angezeigt, die der Anzeigenersteller freigeschaltet hat. 
+            Falls Sie Interesse an der Anzeige haben, klicken Sie auf Anfragen um eine Anfrage zu stellen. Weiteren Kontakt bauen Sie bitte über die angegebenen Kontaktdaten auf.
+        </p>
+        <p>
+            Here you can see all the information relating to this ad. You will be shown all the contact details that the ad creator has activated.
+            If you are interested in the ad, click Inquiry to make an inquiry. Please establish further contact using the contact details provided.
+        </p>
+
+    <h2>3 Administratoren / Administrators</h2>
+    <p class="cap">Autor: David Sturm</p>
+    <h3>3.1 Nutzerverwaltung / Usermanagement</h3>
+        <p>
+            Hier können sie die Nutzer der Seite verwalten. Drücken sie auf "Nutzer erstellen" um einen neuen Nutzer anzulegen oder nutzen sie die Suchfunktion um bereits existierende Nutzer mittels ihrer Profildaten, z.B. Nicknamen, zu finden. Sie können gefundene Nutzer auswählen und mittels der Optionen "Nutzer editieren" die Daten des Nutzers einsehen, ändern und diese gegebenenfalls löschen. Desweiteren können Sie auf eingegangenen Anfragen und Antworten des Nutzers zugreifen.
+        </p>
+        <p>
+            Here you can manage your users. Press "Create User" to create a new user or make use of the searchbar to find existing users by entering userdater (e.g. nickname). Found users can be selected and by pressing "Edit User" you can see/change all their data as well as delete them. You can also access requests and responses received from the user.
+        </p>
+    <h3>3.2 Nutzer anlegen/bearbeiten/löschen / Create/Edit/delete User</h3>
+        <p>
+            Auf dieser Seite können sie neue Nutzer erstellen oder bereits vorhandene Nutzer bearbeiten/löschen. 
+            Beachten Sie, dass die als Pflichtfelder markierten Felder ausgefüllt werden müssen und einige Daten wie der Nickname einzigartig sein müssen.
+            Beachten Sie, dass ebenfalls alle Anzeigen des Nutzers ebenfalls gelöscht werden.
+             Jegliche Änderungen treten hierbei erst nach dem Bestätigen in Kraft.
+        </p>
+        <p>
+            On this page you can create new users or mange/delete already existing once.
+            Please note that the fields marked as required have to be filled out and some entires such as the nickname have to be unique.
+            Please note that all of the user's ads will also be deleted.
+            Any changes will only come into effect after confirmation.
+        </p>
+    <h3>3.3 Kategorieverwaltung / Categorymanagement</h3>
+        <p>
+            Hier können sie die Kategorien der Seite verwalten. Drücken sie auf "Kategorie erstellen" um eine neue Kategorie anzulegen.Wählen sie in dem Baum eine der bereits existierenden Kategorien und drücken sie auf "Kategorie bearbeiten" um diese zu bearbeiten/löschen.
+        </p>
+        <p>
+            Here you can manage the categories of the page. 
+Click on "Create category" to create a new category, select one of the existing categories in the tree and click on "Edit category" to edit/delete it.
+        </p>
+    <h3>3.4 Kategorie anlegen/bearbeiten/löschen / Create/Edit/delete Category</h3>
+        <p>
+            Auf dieser Seite können sie neue Kategorien erstellen oder bereits vorhandene Kategorien bearbeiten/löschen. Beachten sie hierbei das die als Pflichtfelder markierten Felder ausgefüllt werden müssen und einige Daten wie der Titel einzigartig sein müssen. Sollten Sie eine Kategorie löschen wollen haben sie die Möglichkeit alle Unterkategorien sowie damit verbundene Anzeigen an eine andere bereits bestehene Kategorie zu vererben.
+             Beachten Sie, dass Sie nur Oberkategorien wählen könne, welche selber höchstens eine weitere Oberkategorie haben.
+             Beachten Sie, dass sollten sie diese nicht an eine andere Kategorie vererben, das Löschen einer Kategorie ebenfalls alle damit verbundenen Unterkategorien sowie alle mit der Kategorie und deren Unterkategorie verbundenen Anzeigen löscht.
+             Jegliche Änderungen treten hierbei erst nach dem Bestätigen in Kraft.
+        </p>
+        <p>
+             On this page you can create new categories or edit/delete existing categories. Please note that the fields marked as mandatory must be filled in and some data such as the title must be unique. If you want to delete a category, you have the option of transferring all subcategories and associated ads to another existing category.
+             Please note that you can only select a supercategory which itself has at most one other supercategory.
+             Please note that if you do not pass this on to another category, deleting a category also deletes all associated subcategories and all ads associated with the category and its subcategory.
+             Any changes only take effect after confirmation.
+        </p>
+        
+    <h3>3.5 Anzeigen Bearbeiten/Löschen / Edit/delete Advertisement</h3>
+        <p>
+            Auf dieser Seite können Sie bestehende Anzeigen bearbeiten bzw. löschen. Beachten Sie, dass das Löschen der Anzeige gegebenenfalls bestehende Anfragen beeinträchtigt.  Jegliche Änderungen treten hierbei erst nach dem Bestätigen in Kraft.
+        </p>
+        <p>
+            On this page you can edit or delete existing advertisements. Please note that deleting the advertisement may affect existing requests.  Any changes will only take effect after confirmation.
+        </p>
+        
+        <h3>3.6 Datenschutz / Privacy policy </h3>
+        <p>
+            Auf dieser Seite können sie mittels der Textbox ihre Datenschutzbestimmung mittels HTML frei einfügen und editieren.
+        </p>
+        <p>
+            On this page you may use the  text box to freely insert and edit your privacy policy using HTML.
+        </p>
+
+        <h3>3.7 Impressum / Imprint</h3>
+        <p>
+            Auf dieser Seite können sie mit der Textbox ihr Impressum mittels HTML frei einfügen und editieren.
+        </p>
+        <p>
+            On this page you may use the  text box to freely insert and edit your imprint using HTML.
+        </p>
+
+        <h3>3.8 Kontakt / Contact Information </h3>
+        <p>
+            Auf dieser Seite können sie mit der Textbox ihre Kontaktinformationen mittels HTML frei einfügen und editieren.
+        </p>
+        <p>
+            On this page you may use the  text box to freely insert and edit your contact information using HTML.
+        </p>
+</body>
+</html>

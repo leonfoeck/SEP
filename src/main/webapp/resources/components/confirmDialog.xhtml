@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Author: Jakob Edmaier -->
+<ui:composition xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:cc="jakarta.faces.composite">
+    <cc:interface>
+        <cc:attribute name="header" type="java.lang.String"/>
+        <cc:attribute name="accept" method-signature="java.lang.String accept()"/>
+        <cc:attribute name="acceptLabel" type="java.lang.String" default="#{messages.f_button_yes}"/>
+        <cc:attribute name="rejectLabel" type="java.lang.String" default="#{messages.f_button_no}"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <div class="modal fade" id="#{cc.id}" tabindex="-1" aria-labelledby="#{cc.id}Label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="#{cc.id}Label">#{cc.attrs.header}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                    </div>
+                    <div class="modal-body">
+                        <cc:insertChildren/>
+                    </div>
+                    <h:form id="deleteForm" class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+                            #{cc.attrs.rejectLabel}
+                        </button>
+                        <h:commandButton id="confirmDeleteButton" styleClass="btn btn-danger"
+                                         value="#{cc.attrs.acceptLabel}"
+                                         action="#{cc.attrs.accept}"
+                                         immediate="true"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </cc:implementation>
+</ui:composition>

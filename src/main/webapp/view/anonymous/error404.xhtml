@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="de"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+>
+
+<h:head>
+    <title>#{messages.f_error}</title>
+
+    <h:outputStylesheet name="css/bootstrap/bootstrap.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-grid.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-grid.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-reboot.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-reboot.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-utilities.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-utilities.rtl.css"/>
+    <h:outputStylesheet name="css/styles.css"/>
+</h:head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+<h:panelGroup layout="block" styleClass="w-50 text-center">
+    <h:panelGroup layout="block" styleClass="p-3">
+        <h:panelGroup layout="block" styleClass="row mb-0">
+            <h:outputText id="error-code" styleClass="fw-bolder display-1 text-center" value="404"/>
+        </h:panelGroup>
+    </h:panelGroup>
+    <h:panelGroup layout="block" styleClass="p-3">
+        <h:panelGroup layout="block" styleClass="row mb-2">
+            <h:outputText value="#{messages.f_page_not_found}" styleClass="text-center fs-2"/>
+        </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="row mb-3 justify-content-center">
+            <h:button value="#{messages.f_go_home}" outcome="/view/anonymous/allAdvertisements.xhtml?faces-redirect=true"
+                      styleClass="btn btn-primary w-auto"/>
+        </h:panelGroup>
+    </h:panelGroup>
+</h:panelGroup>
+</body>
+</html>

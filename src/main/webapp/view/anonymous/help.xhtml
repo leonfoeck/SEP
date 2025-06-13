@@ -1,0 +1,27 @@
+<!-- Author: Leon Föckersperger -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <!-- Container für den Button und das Formular -->
+    <div class="help-container">
+        <h:form>
+            <h:panelGroup layout="block" id="test" styleClass="card" rendered="#{helpBean.help.visible}">
+            <div class="card-header">
+                <h:outputText value="#{messages.f_header_helpPanel}" escape="true"/>
+            </div>
+            <div class="card-body">
+                <h:outputText value="#{helpBean.help.text}" escape="true"/>
+            </div>
+            </h:panelGroup>
+            <!-- Button immer sichtbar, außerhalb des durch 'isVisible' kontrollierten Formulars -->
+
+            <h:commandButton id="helpButton" value="?" action="#{helpBean.toggleHelpText}" styleClass="btn btn-primary rounded-circle help-button"
+                             aria-label="Toggle Help Text">
+                <f:ajax render="@form" />
+            </h:commandButton>
+        </h:form>
+    </div>
+
+</ui:composition>

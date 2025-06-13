@@ -1,0 +1,125 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:param name="title" value="#{messages.f_change_system_settings_header}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="row align-items-center justify-content-center">
+            <h:panelGroup layout="block" styleClass="col-md-10 py-5">
+                <h:form id="adminInput" rendered="#{userSession.userAdmin}" enctype="multipart/form-data">
+                    <h:panelGroup layout="block" styleClass="row p-4">
+                        <h:panelGroup layout="block" styleClass="col-md-6">
+                            <o:graphicImage id="logo" styleClass="mb-5 mt-4 img-fluid rounded-2 border shadow-sm vh-75"
+                                            value="#{systemAdministrationBean.systemData.logo}" dataURI="true">
+                                <f:passThroughAttribute name="style" value="width: 256px"/>
+                            </o:graphicImage>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="col-md-6 align-self-center">
+                            <h:panelGroup layout="block" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="mb-3">
+                                    <h:outputLabel for="logoInput" styleClass="mb-3">
+                                        <h:outputText value="#{messages.f_select_logo}" for="logoInput"/>
+                                    </h:outputLabel>
+                                    <o:inputFile id="logoInput" value="#{systemAdministrationBean.logoInputPart}" styleClass="form-control"
+                                                 accept="image/png,image/jpeg" acceptMessage="#{messages.m_avatar_accept_message}">
+                                        <f:validator validatorId="avatarValidator"/>
+                                        <f:ajax render="adminInput:logo adminInput:logoInputMessage"/>
+                                    </o:inputFile>
+                                    <h:message for="logoInput" id="logoInputMessage" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="row">
+                                <h:panelGroup styleClass="mb-3 d-flex justify-content-center">
+                                    <h:commandButton id="revertLogo" action="#{systemAdministrationBean.revertLogo()}"
+                                                     value="#{messages.f_revert_logo}" styleClass="btn btn-primary w-75" immediate="true"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6 mt-3">
+                                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                                    <h:inputText id="sumPaginatedItems" value="#{systemAdministrationBean.systemData.sumPaginatedItems}"
+                                                 required="true" requiredMessage="#{messages.v_input_required}" maxlength="16"
+                                                 styleClass="form-control">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_sum_paginated_items}"/>
+                                        <f:passThroughAttribute name="onkeypress"
+                                                                value="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
+                                        <f:validateLength maximum="16"/>
+                                        <f:convertNumber integerOnly="true" type="number" groupingUsed="false"/>
+                                    </h:inputText>
+                                    <h:outputLabel for="sumPaginatedItems">
+                                        <h:outputText value="#{messages.f_sum_paginated_items}" for="sumPaginatedItems"/>
+                                        <h:outputText value=" *" styleClass=" text-danger" for="sumPaginatedItems"/>
+                                    </h:outputLabel>
+                                    <h:message for="sumPaginatedItems" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="mb-4 text-start">
+                                    <h:outputLabel for="cssFile" value="#{messages.f_css_name}" styleClass="form-label fw-light fs-6"/>
+                                    <h:selectOneMenu id="cssFile" value="#{systemAdministrationBean.systemData.cssStylesheetName}"
+                                                     styleClass="form-select">
+                                        <f:selectItems value="#{systemAdministrationBean.cssFiles}"/>
+                                    </h:selectOneMenu>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="row">
+                            <h:panelGroup layout="block" styleClass="col-md-6">
+                                <h:panelGroup layout="block" styleClass="input-group mb-3">
+                                    <h:panelGroup layout="block" styleClass="form-floating">
+                                        <h:inputText id="maxImageSize" value="#{systemAdministrationBean.systemData.maxImageSize}" required="true"
+                                                     requiredMessage="#{messages.v_input_required}" maxlength="16" styleClass="form-control">
+                                            <f:passThroughAttribute name="placeholder" value="#{messages.f_css_name}"/>
+                                            <f:passThroughAttribute name="onkeypress"
+                                                                    value="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
+                                            <f:validateLength maximum="16"/>
+                                            <f:convertNumber integerOnly="true" type="number" groupingUsed="false"/>
+                                        </h:inputText>
+                                        <h:outputLabel for="maxImageSize">
+                                            <h:outputText value="#{messages.f_max_image_size}" for="maxImageSize"/>
+                                            <h:outputText value=" *" styleClass=" text-danger" for="maxImageSize"/>
+                                        </h:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="input-group-text" for="maxImageSize">
+                                        <h:outputText value="KB" for="maxImageSize" styleClass="user-select-none"/>
+                                    </h:panelGroup>
+                                    <h:message for="maxImageSize" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" styleClass="col-md-6 ">
+                                <h:panelGroup layout="block" styleClass="row ms-1 me-1 border rounded-2">
+                                    <h:panelGroup layout="block" styleClass="form-check form-switch mt-3 mb-3">
+                                        <h:outputLabel for="adminVerificationNeeded" styleClass="form-check-label">
+                                            <h:outputText value="#{messages.f_admin_verification_needed}" for="adminVerificationNeeded"/>
+                                        </h:outputLabel>
+                                        <h:selectBooleanCheckbox id="adminVerificationNeeded" styleClass="form-check-input ms-3" type="checkbox"
+                                                                 value="#{systemAdministrationBean.systemData.
+                                                                 adminConfirmationRequiredForRegistration}">
+                                            <f:passThroughAttribute name="style" value="transform: scale(1.5);"/>
+                                        </h:selectBooleanCheckbox>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" styleClass="d-grid gap-2 p-3">
+                        <h:commandButton id="saveSystemSettings" action="#{systemAdministrationBean.submit()}"
+                                         value="#{messages.f_save_system_settings}" styleClass="btn btn-primary">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:define>
+
+
+</ui:composition>

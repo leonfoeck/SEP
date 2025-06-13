@@ -1,0 +1,147 @@
+# Author: Leon Föckersperger
+---
+image: ghcr.io/uni-passau-artemis/artemis-base:21
+
+stages:
+  - build
+  - lint
+  - test
+  - doc
+  - package
+
+# Cache the Maven dependency repository to speed up builds
+default:
+  cache:
+    paths:
+      - .m2/repository
+
+# Set Maven's local dependency repository
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+# A build target for compilation
+build:
+  stage: build
+  image: ghcr.io/uni-passau-artemis/artemis-base:${JDK_VERSION}
+  parallel:
+    matrix:
+      - JDK_VERSION: ["21"]
+  needs: []
+  script:
+    - mvn --no-transfer-progress clean compile -Dmaven.repo.local=./.m2/repository
+#  artifacts:
+#    paths:
+#      - .m2/
+#      - target
+#    expire_in: 3 hrs
+
+# Linting stage using Mega-Linter for comprehensive linting
+lint:
+  stage: lint
+  needs:
+    - build
+  image: oxsecurity/megalinter:v7.12.0
+  script:
+    - npx mega-linter-runner
+  variables:
+    DEFAULT_WORKSPACE: $CI_PROJECT_DIR
+  artifacts:
+    when: always
+    paths:
+      - report
+    expire_in: 1 week
+
+# SpotBugs stage for static code analysis
+spotbugs:
+  stage: lint
+  script:
+    - mvn --no-transfer-progress -DskipUnitTests -DskipIntegrationTests clean compile test-compile spotbugs:check
+
+# A target for running unit tests
+test:
+  stage: test
+  image: ghcr.io/uni-passau-artemis/artemis-base:${JDK_VERSION}
+  parallel:
+    matrix:
+      - JDK_VERSION: ["21"]
+  needs:
+    - build
+  coverage: "/Total.*?([0-9]{1,3})%/"
+  script:
+    - mvn --no-transfer-progress test
+  artifacts:
+    paths:
+      - target/surefire-reports/
+      - target/site/jacoco-ut/
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+
+# A target for running integration tests
+integration-test:
+  stage: test
+  image: ghcr.io/uni-passau-artemis/artemis-base:${JDK_VERSION}
+  parallel:
+    matrix:
+      - JDK_VERSION: ["21"]
+  needs:
+    - build
+  script:
+    - mvn --no-transfer-progress -DskipUnitTests verify
+  artifacts:
+    reports:
+      junit:
+        - target/failsafe-reports/TEST-*.xml
+
+# A target for running system tests
+#system-test:
+#  image: ghcr.io/uni-passau-artemis/artemis-java-firefox:${JDK_VERSION}
+#  parallel:
+#    matrix:
+#      - JDK_VERSION: ["21"]
+#  stage: test
+#  needs:
+#    - build
+  # Running system tests can be computationally expensive.  You might want to run them only once a
+  # day, for example, as a nightly build job.  To configure this, add a schedule in GitLab's
+  # `CI/CD -> Schedules` menu of your project and remove the comment from the following two lines:
+  # only:
+  #   - schedules
+#  script:
+#    - mvn --no-transfer-progress -DskipUnitTests -DskipIntegerationTests -Psystem-tests clean compile verify
+#  artifacts:
+#    reports:
+#      junit:
+#        - target/failsafe-reports/TEST-*.xml
+
+# A target for building the WAR archive
+package:
+  stage: package
+  image: ghcr.io/uni-passau-artemis/artemis-base:${JDK_VERSION}
+  parallel:
+    matrix:
+      - JDK_VERSION: ["21"]
+  needs:
+    - build
+    - test
+    - integration-test
+#    - system-test
+  script:
+    - mvn --no-transfer-progress package -DskipUnitTests -DskipIntegrationTests -DskipSystemTests
+  artifacts:
+    paths:
+      - target/*.war
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# Javadoc stage for generating the documentation
+javadoc:
+  stage: doc
+  script:
+    - mvn javadoc:javadoc
+  artifacts:
+    when: always
+    paths:
+      - target/site/apidocs/
+    expire_in: 1 week

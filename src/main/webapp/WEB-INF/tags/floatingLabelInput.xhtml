@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Author: Jakob Edmaier -->
+<ui:composition xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core">
+    <div class="#{styleClass}">
+        <div class="form-floating mb-3">
+            <h:inputText id="#{id}"
+                         value="#{value}"
+                         required="#{required}"
+                         styleClass="form-control"
+                         requiredMessage="#{messages.v_input_required}">
+                <f:passThroughAttribute name="placeholder" value="#{label}"/>
+                <ui:insert/>
+            </h:inputText>
+            <h:outputLabel for="#{id}">
+                <h:outputText value="#{label}"/>
+                <h:outputText rendered="#{required}" value=" *" styleClass="text-danger"/>
+            </h:outputLabel>
+            <h:message id="#{id}-message" for="#{id}" styleClass="text-danger"/>
+        </div>
+    </div>
+</ui:composition>

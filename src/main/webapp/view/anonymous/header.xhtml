@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui">
+    <h:body>
+        <h:panelGroup layout="block" styleClass="container-fluid">
+            <div class="d-flex me-auto">
+                <h:link id="logoLink" outcome="/view/anonymous/allAdvertisements" styleClass="navbar-brand me-5">
+                    <o:graphicImage class="logoImage" value="#{headerBean.systemData.logo}" dataURI="true"/>
+                </h:link>
+                <h:panelGroup styleClass="justify-content-center align-self-center">
+                    <h:form id="headerButtonsLeft" rendered="#{userSession.isUserLoggedIn()}">
+                        <h:button id="createAd" value="#{messages.f_createAdButton}" outcome="/view/registered/editAdvertisement"
+                                  styleClass="btn btn-primary"
+                                  aria-label="#{messages.f_createAdButton}"/>
+                    </h:form>
+                </h:panelGroup>
+
+            </div>
+            <h:panelGroup layout="block" styleClass="me-auto" id="navbarNav" rendered="#{userSession.isUserLoggedIn()}">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <h:link outcome="/view/registered/createdAdvertisements" styleClass="nav-link active me-5"
+                                value="#{messages.f_myAdsLink_header}" aria-label="My Ads"/>
+                    </li>
+                    <li class="nav-item">
+                        <h:link id="claimedAdsLink" outcome="/view/registered/claimedAdvertisements" styleClass="nav-link active me-5"
+                                value="#{messages.f_claimedAdsLink_header}" aria-label="Claimed Ads"/>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="/view/admin/userAdministration" styleClass="nav-link active me-5"
+                                value="#{messages.f_userAdministrationLink}" aria-label="#{messages.f_userAdministrationLink}"
+                                rendered="#{userSession.isUserAdmin()}"/>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="/view/admin/systemAdministration" styleClass="nav-link active me-5"
+                                value="#{messages.f_change_system_settings_header}" aria-label="#{messages.f_change_system_settings_header}"
+                                rendered="#{userSession.isUserAdmin()}"/>
+                    </li>
+                </ul>
+            </h:panelGroup>
+            <h:form id="headerButtonsRight">
+                <!-- Right Aligned Buttons -->
+                <h:panelGroup layout="block" styleClass="d-flex ms-auto">
+                    <h:button id="profile" value="#{messages.f_profileLink_header}" outcome="/view/registered/profile"
+                              styleClass="btn btn-secondary me-2"
+                              aria-label="#{messages.f_profileLink_header}" rendered="#{userSession.isUserLoggedIn()}"/>
+                    <h:button id="register" value="#{messages.f_register}" outcome="/view/anonymous/register" styleClass="btn btn-secondary me-2"
+                              aria-label="Register" rendered="#{!userSession.isUserLoggedIn()}"/>
+                    <h:button id="login" value="#{messages.f_loginButton_header}" outcome="/view/anonymous/login" styleClass="btn btn-success me-2"
+                              aria-label="Login" rendered="#{!userSession.isUserLoggedIn()}"/>
+                    <h:commandButton id="logout" value="#{messages.f_logoutButton_header}" action="#{headerBean.logout()}" styleClass="btn btn-danger"
+                                     aria-label="Logout" rendered="#{userSession.isUserLoggedIn()}"/>
+                </h:panelGroup>
+            </h:form>
+        </h:panelGroup>
+    </h:body>
+</ui:composition>

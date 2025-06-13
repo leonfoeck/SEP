@@ -1,0 +1,56 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+>
+
+    <ui:param name="title" value="#{messages.f_login}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="container mt-3 w-50">
+            <h:form id="userInput"
+                    onkeypress="if (['Enter', 'NumpadEnter'].includes(event.key)) { document.getElementById('userInput:submit').click();
+                        return false; }">
+                <h:panelGroup layout="block" styleClass="form-floating mb-3">
+                    <h:inputText type="email" id="nick" value="#{loginBean.login.nickname}" required="true"
+                                 requiredMessage="#{messages.v_input_required}" maxlength="255" styleClass="form-control">
+                        <f:passThroughAttribute name="placeholder" value="#{messages.f_login_nick_email}"/>
+                        <f:validateLength maximum="255"/>
+                    </h:inputText>
+                    <h:outputLabel value="#{messages.f_login_nick_email}" for="nick"/>
+                    <h:message for="nick" styleClass="text-danger"/>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="form-floating mt-3 mb-3">
+                    <h:inputSecret type="password" id="password" value="#{loginBean.login.password}" required="true"
+                                   requiredMessage="#{messages.v_input_required}" maxlength="255" styleClass="form-control">
+                        <f:passThroughAttribute name="placeholder=" value="#{messages.f_password}"/>
+                        <f:validateLength maximum="255"/>
+                    </h:inputSecret>
+                    <h:outputLabel value="#{messages.f_password}" for="password" styleClass="form-label"/>
+                    <h:message id="password-message" for="password" styleClass="text-danger"/>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="row mb-4">
+                    <h:panelGroup layout="block" styleClass="col">
+                        <h:link id="passwordResetLink" outcome="/view/anonymous/passwordResetRequest?faces-redirect=true"
+                                value="#{messages.f_passwordResetLink}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="d-grid gap-2 mb-3">
+                    <h:commandButton id="submit" action="#{loginBean.submit()}" value="#{messages.f_login}" styleClass="btn btn-primary">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="text-center">
+                    <h:outputText value="#{messages.f_login_not_a_member} "/> <h:link outcome="/view/anonymous/register?faces-redirect=true"
+                                                                                      value="#{messages.f_register_link}"/>
+                </h:panelGroup>
+
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

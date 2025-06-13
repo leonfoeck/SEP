@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="de"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+>
+
+<h:head>
+    <title>#{messages.f_error}</title>
+
+    <h:outputStylesheet name="css/bootstrap/bootstrap.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-grid.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-grid.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-reboot.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-reboot.rtl.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-utilities.css"/>
+    <h:outputStylesheet name="css/bootstrap/bootstrap-utilities.rtl.css"/>
+    <h:outputStylesheet name="css/styles.css"/>
+</h:head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+<h:panelGroup layout="block" styleClass="w-50 text-center">
+    <h:panelGroup layout="block" styleClass="p-3">
+        <h:panelGroup layout="block" styleClass="row mb-3">
+            <h:outputText styleClass="fw-bold fs-2 text-center" value="#{messages.f_error_header}"/>
+        </h:panelGroup>
+    </h:panelGroup>
+    <h:panelGroup layout="block" styleClass="p-3">
+        <h:panelGroup layout="block" styleClass="row mb-3">
+            <h:outputText value="#{errorBean.error.message}" styleClass="text-center"/>
+        </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="row mb-3 justify-content-center">
+            <h:button value="#{messages.f_go_home}" outcome="/view/anonymous/allAdvertisements.xhtml?faces-redirect=true"
+                      styleClass="btn btn-primary btn-sm w-auto"/>
+        </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="row" rendered="#{facesContext.application.projectStage == 'Development'}">
+            <h:panelGroup layout="block" styleClass="col-12">
+                <h:panelGroup layout="block" styleClass="overflow-auto">
+                    <f:passThroughAttribute name="style" value="max-height :200px"/>
+                    <h:outputLabel escape="false" value="#{errorBean.error.stacktrace}"/>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:panelGroup>
+</h:panelGroup>
+
+</body>
+</html>

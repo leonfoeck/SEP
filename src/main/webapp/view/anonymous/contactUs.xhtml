@@ -1,0 +1,41 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="title">#{messages.f_pageTitle_contactUs}</ui:define>
+
+    <ui:define name="childContent">
+        <h2>#{messages.f_heading_contactUs}</h2>
+        <h:panelGroup layout="block" styleClass="container mt-3 w-50">
+            <h:panelGroup rendered="#{not userSession.isUserAdmin()}" styleClass="text-start">
+                <h:outputText value="#{contactUsBean.systemData.contact}" escape="false" styleClass="text-start"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSession.isUserAdmin()}">
+                <h:form id="contact-info">
+                    <div class="mb-3">
+                        <h:inputTextarea value="#{contactUsBean.systemData.contact}"
+                                         rendered="#{not contactUsBean.previewShown}"
+                                         styleClass="form-control">
+                            <f:passThroughAttribute name="rows" value="10"/>
+                        </h:inputTextarea>
+                        <h:panelGroup rendered="#{contactUsBean.previewShown}" styleClass="text-start">
+                            <h:outputText value="#{contactUsBean.systemData.contact}" escape="false" styleClass="text-start"/>
+                        </h:panelGroup>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <h:commandButton action="#{contactUsBean.togglePreview()}"
+                                         value="#{contactUsBean.previewShown ? messages.f_button_editor_contactUs :
+                                          messages.f_button_preview_contactUs}"
+                                         styleClass="btn btn-outline-secondary mx-3"/>
+                        <h:commandButton action="#{contactUsBean.submitNewContactInformation()}"
+                                         value="#{messages.f_submit_contactUs}"
+                                         styleClass="btn btn-primary mx-0"/>
+                    </div>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

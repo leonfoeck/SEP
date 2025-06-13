@@ -1,0 +1,42 @@
+# Author: Leon Föckersperger
+
+# Configuration file for MegaLinter
+# See all available variables at https://oxsecurity.github.io/megalinter/configuration/ and in linters documentation
+---
+APPLY_FIXES: none
+SHOW_ELAPSED_TIME: true
+FILEIO_REPORTER: false
+
+DISABLE:
+  - COPYPASTE
+  - SPELL
+
+DISABLE_LINTERS:
+  - MARKDOWN_MARKDOWN_LINK_CHECK
+  - MARKDOWN_MARKDOWNLINT
+  - REPOSITORY_GITLEAKS
+  - JAVASCRIPT_STANDARD
+  - CSS_STYLELINT
+  - REPOSITORY_DEVSKIM
+  - REPOSITORY_GRYPE
+
+FILTER_REGEX_EXCLUDE: (\.classpath|\.project|pom\.xml)
+
+EXCLUDED_DIRECTORIES:
+  - .m2
+  - target
+  - .idea
+  - .git
+  - docs
+  - src/main/resources
+  - src/main/webapp
+  - ci_cd
+
+JAVA_CHECKSTYLE_CONFIG_FILE: ci_cd/checks/java_checkstyle.xml
+REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
+REPOSITORY_TRIVY_DISABLE_ERRORS: true
+
+EDITORCONFIG_EDITORCONFIG_CHECKER_ARGUMENTS:
+  - -disable-indent-size
+
+EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: (bootstrap\.css|.*\.sql)

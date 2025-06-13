@@ -1,0 +1,68 @@
+<!-- Autor: Leon Föckersperger -->
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:comp="jakarta.faces.composite/components"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:param name="title" value="#{messages.f_pageTitle_outgoingRequests}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="header-container">
+            <h:outputText value="#{messages.f_outgoingRequestsHeader}" styleClass="h2"/>
+            <h:panelGroup layout="block" styleClass="button-container">
+                <h:link value="#{messages.f_claimedAdvertisementsLink}" outcome="/view/registered/claimedAdvertisements"
+                        styleClass="btn btn-primary"/>
+            </h:panelGroup>
+        </h:panelGroup>
+
+        <h:form>
+
+
+            <comp:dynamicDataTable id="outgoingRequestsTable" dataModel="#{outgoingRequestsBean.dataModel}">
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="request-user-nick" columnName="#{messages.f_user}"
+                                               columnIdentifier="user"/>
+                    </f:facet>
+                    <h:outputText value="#{item.requestCreatorUsername}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="request-ad-title" columnName="#{messages.f_advertisement}"
+                                               columnIdentifier="ad"/>
+                    </f:facet>
+                    <h:outputText value="#{item.advertisementTitle}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="request-text" columnName="#{messages.f_requestText}"
+                                               columnIdentifier="requestText"/>
+                    </f:facet>
+                    <h:outputText value="#{item.request}">
+                        <f:converter converterId="stringLengthConverter"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="request-response" columnName="#{messages.f_response}"
+                                               columnIdentifier="response"/>
+                    </f:facet>
+                    <h:outputText value="#{item.response}">
+                        <f:converter converterId="stringLengthConverter"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="request-accepted" columnName="#{messages.f_accepted}"
+                                               columnIdentifier="accepted"/>
+                    </f:facet>
+                    <h:outputText rendered="#{item.accepted != null and item.accepted}" value="#{messages.f_accepted_requests}"/>
+                    <h:outputText rendered="#{item.accepted != null and !item.accepted}" value="#{messages.f_rejected_requests}"/>
+                    <h:outputText rendered="#{item.accepted eq null}" value="#{messages.f_pending_requests}"/>
+                </h:column>
+            </comp:dynamicDataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

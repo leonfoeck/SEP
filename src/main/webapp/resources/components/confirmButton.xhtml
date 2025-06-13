@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Author: Jakob Edmaier -->
+<ui:composition xmlns:ui="jakarta.faces.facelets"
+                xmlns:cc="jakarta.faces.composite">
+    <cc:interface>
+        <cc:attribute name="value" type="java.lang.String" required="true"/>
+        <cc:attribute name="forId" type="java.lang.String" required="true"/>
+        <cc:attribute name="styleClass" type="java.lang.String" required="false" default="btn btn-outline-danger"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <button id="deleteButton" type="button" class="#{cc.attrs.styleClass}" data-bs-toggle="modal" data-bs-target="##{cc.attrs.forId}">
+            #{cc.attrs.value}
+        </button>
+    </cc:implementation>
+</ui:composition>

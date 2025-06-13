@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config version="4.0"
+              xmlns="https://jakarta.ee/xml/ns/jakartaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                      https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd">
+
+  <application>
+    <locale-config>
+      <default-locale>de</default-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>en</supported-locale>
+    </locale-config>
+
+    <resource-bundle>
+      <base-name>de.uni_passau.fim.talent_tauscher.model.backing.i18n.messages</base-name>
+      <var>messages</var>
+    </resource-bundle>
+
+    <message-bundle>
+      de.uni_passau.fim.talent_tauscher.model.backing.i18n.messages
+    </message-bundle>
+  </application>
+
+
+  <lifecycle>
+    <phase-listener>de.uni_passau.fim.talent_tauscher.model.backing.util.TrespassListener</phase-listener>
+  </lifecycle>
+
+  <factory>
+    <exception-handler-factory>
+      de.uni_passau.fim.talent_tauscher.model.backing.exceptions.AppExceptionHandlerFactory
+    </exception-handler-factory>
+  </factory>
+</faces-config>

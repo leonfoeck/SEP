@@ -1,0 +1,28 @@
+<!-- Author: Leon Föckersperger -->
+<ui:composition xmlns:h="jakarta.faces.html" xmlns:ui="jakarta.faces.facelets"
+                xmlns:cc="jakarta.faces.composite">
+    <cc:interface>
+        <cc:attribute name="dataModel"
+                      type="de.uni_passau.fim.talent_tauscher.model.backing.util.PaginatedDataModel"
+                      required="true"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGroup layout="block" styleClass="filter-container">
+            <h:commandButton id="filterButton" value="#{messages.f_filter}" action="#{cc.attrs.dataModel.refresh()}"
+                             aria-label="Daten filtern" styleClass="btn btn-primary"/>
+        </h:panelGroup>
+        <h:dataTable value="#{cc.attrs.dataModel}" var="item" id="dataTable"
+                     styleClass="dynamic-data-table">
+            <cc:insertChildren/>
+        </h:dataTable>
+        <h:panelGroup layout="block" styleClass="pagination-container">
+            <h:commandButton value="#{messages.f_previousButton}" action="#{cc.attrs.dataModel.previousPage()}"
+                             disabled="#{!cc.attrs.dataModel.hasPreviousPage()}" id="previous" styleClass="btn btn-secondary"/>
+            <h:inputText value="#{cc.attrs.dataModel.pagination.page}" id="pageInput"
+                         required="true" requiredMessage="#{messages.m_wrongPaginationNumber}" styleClass="pagination-input me-2"/>
+            <h:outputText id="totalPages" value="#{messages.f_of} #{cc.attrs.dataModel.pagination.totalPages}" styleClass="pagination-text "/>
+            <h:commandButton value="#{messages.f_nextButton}" action="#{cc.attrs.dataModel.nextPage()}"
+                             disabled="#{!cc.attrs.dataModel.hasNextPage()}" id="nextButton" styleClass="btn btn-secondary"/>
+        </h:panelGroup>
+    </cc:implementation>
+</ui:composition>

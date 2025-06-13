@@ -1,0 +1,229 @@
+<ui:composition template="/resources/template/skeleton.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:ct="custom.tags"
+                xmlns:comp="jakarta.faces.composite/components">
+    <f:metadata>
+        <f:viewParam name="id" value="#{editAdvertisementBean.ad.id}"/>
+        <f:viewAction action="#{editAdvertisementBean.loadData()}"/>
+    </f:metadata>
+
+    <ui:param name="title" value="#{messages.f_pageTitle_editAdvertisement}"/>
+    <ui:define name="childContent">
+        <div class="container mt-4 text-start">
+            <h:link value="&lt; #{messages.f_go_back}" outcome="/view/registered/createdAdvertisements"/>
+            <h2>#{editAdvertisementBean.ad.id == 0 ? messages.f_heading_createAdvertisement : messages.f_heading_editAdvertisement}</h2>
+
+            <h:form id="advertisement-form" enctype="multipart/form-data" class="mt-3">
+                <div class="row g-5">
+                    <div class="col-xl-4">
+                        <h4>#{messages.f_selectImage_editAdvertisement}</h4>
+                        <h:panelGroup id="image-block" layout="block">
+                            <o:graphicImage id="image" styleClass="mb-3 img-fluid rounded-2 border shadow-sm vh-75"
+                                            value="#{editAdvertisementBean.ad.image}" dataURI="true">
+                                <f:passThroughAttribute name="style" value="width: 100%"/>
+                            </o:graphicImage>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="align-self-center">
+                            <h:panelGroup layout="block" styleClass="row">
+                                <h:panelGroup layout="block" styleClass="mb-3">
+                                    <o:inputFile id="image-input"
+                                                 value="#{editAdvertisementBean.imageInputPart}"
+                                                 styleClass="form-control"
+                                                 accept="image/png,image/jpeg"
+                                                 acceptMessage="#{messages.f_button_yes}">
+                                        <f:validator validatorId="advertisementImageValidator"/>
+                                        <f:ajax render="image image-message"/>
+                                    </o:inputFile>
+                                    <h:message id="image-message" for="image-input" styleClass="text-danger"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="mb-3">
+                                <h:commandButton id="deleteAvatar"
+                                                 action="#{editAdvertisementBean.deleteImage()}"
+                                                 value="#{messages.f_button_deleteImage}"
+                                                 styleClass="mx-0 btn btn-outline-danger"
+                                                 immediate="true"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </div>
+
+                    <div class="col-xl-8">
+                        <h4>#{messages.f_generalInformation_editAdvertisement}</h4>
+                        <h:panelGroup layout="block" styleClass="row mt-3 mb-3">
+                            <h:outputText styleClass="text-start fs-6 fw-lighter" value="#{messages.f_fields_with_star_are_required}"/>
+                        </h:panelGroup>
+
+                        <div class="row">
+                            <ct:floatingLabelInput id="title"
+                                                   value="#{editAdvertisementBean.ad.title}"
+                                                   label="#{messages.f_label_title_editAdvertisement}"
+                                                   required="true"
+                                                   styleClass="col-md-8">
+                                <f:validateLength maximum="255"/>
+                            </ct:floatingLabelInput>
+
+                            <ct:floatingLabelInput id="cost"
+                                                   value="#{editAdvertisementBean.ad.cost}"
+                                                   label="#{messages.f_label_cost_editAdvertisement}"
+                                                   required="true"
+                                                   styleClass="col-md-4">
+                                <f:validateLength maximum="15"/>
+                                <f:convertNumber integerOnly="true" type="number"/>
+                                <f:passThroughAttribute name="onkeypress"
+                                                        value="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
+                            </ct:floatingLabelInput>
+
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <h:inputTextarea id="description"
+                                                     value="#{editAdvertisementBean.ad.description}"
+                                                     styleClass="form-control"
+                                                     style="height: 8rem">
+                                        <f:passThroughAttribute name="placeholder" value="#{messages.f_label_description_editAdvertisement}"/>
+                                        <f:validateLength maximum="2047"/>
+                                    </h:inputTextarea>
+                                    <h:outputLabel for="description">
+                                        <h:outputText value="#{messages.f_label_description_editAdvertisement}"/>
+                                    </h:outputLabel>
+                                    <h:message for="description" styleClass="text-danger"/>
+                                </div>
+                            </div>
+
+                            <ct:floatingLabelInput id="startDate"
+                                                   value="#{editAdvertisementBean.ad.startDate}"
+                                                   label="#{messages.f_label_startDate_editAdvertisement}"
+                                                   required="true"
+                                                   styleClass="col-md-6">
+                                <f:convertDateTime type="localDate"/>
+                            </ct:floatingLabelInput>
+
+                            <ct:floatingLabelInput id="endDate"
+                                                   value="#{editAdvertisementBean.ad.endDate}"
+                                                   label="#{messages.f_label_endDate_editAdvertisement}"
+                                                   styleClass="col-md-6">
+                                <f:convertDateTime type="localDate"/>
+                            </ct:floatingLabelInput>
+
+                            <div class="col-12 mb-3 pl-3">
+                                <div class="form-check">
+                                    <h:selectBooleanCheckbox id="hidden" value="#{editAdvertisementBean.ad.hidden}" styleClass="form-check-input"/>
+                                    <h:outputLabel for="hidden" value="#{messages.f_label_hidden_editAdvertisement}" styleClass="form-check-label"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <h:panelGroup id="contactData" class="row">
+                            <h4>#{messages.f_contactData_editAdvertisement}</h4>
+                            <div class="col-12 mb-3 pl-3">
+                                <div class="form-check">
+                                    <h:selectBooleanCheckbox id="nameShown" value="#{editAdvertisementBean.ad.nameShown}"
+                                                             styleClass="form-check-input"/>
+                                    <h:outputLabel for="nameShown" value="#{messages.f_label_nameShown_editAdvertisement}"
+                                                   styleClass="form-check-label"/>
+                                </div>
+                                <div class="form-check">
+                                    <h:selectBooleanCheckbox id="streetShown" value="#{editAdvertisementBean.ad.streetShown}"
+                                                             styleClass="form-check-input"/>
+                                    <h:outputLabel for="streetShown" value="#{messages.f_label_streetShown_editAdvertisement}"
+                                                   styleClass="form-check-label"/>
+                                </div>
+                                <div class="form-check ">
+                                    <h:selectBooleanCheckbox id="phoneNumberShown" value="#{editAdvertisementBean.ad.phoneNumberShown}"
+                                                             styleClass="form-check-input"/>
+                                    <h:outputLabel for="phoneNumberShown" value="#{messages.f_label_phoneNumberShown_editAdvertisement}"
+                                                   styleClass="form-check-label"/>
+                                </div>
+
+                            </div>
+
+                            <h:panelGroup class="contactData col-12 row">
+                                <h4>#{messages.f_editContactData_editAdvertisement}</h4>
+                                <div class="col-12 d-flex justify-content-start">
+                                    <h:commandButton value="#{messages.f_button_takeContactDataFromProfile_editAdvertisement}"
+                                                     styleClass="btn btn-secondary my-3 mx-0"
+                                                     action="#{editAdvertisementBean.takeUserContactData()}">
+                                        <f:ajax execute="@this" render="contactData"/>
+                                    </h:commandButton>
+                                </div>
+                                <ct:floatingLabelInput id="country"
+                                                       value="#{editAdvertisementBean.ad.country}"
+                                                       label="#{messages.f_label_country_editAdvertisement}"
+                                                       required="true"
+                                                       styleClass="col-md-4">
+                                    <f:validateLength maximum="40"/>
+                                </ct:floatingLabelInput>
+
+                                <ct:floatingLabelInput id="postalCode"
+                                                       value="#{editAdvertisementBean.ad.postalCode}"
+                                                       label="#{messages.f_label_postalCode_editAdvertisement}"
+                                                       required="true"
+                                                       styleClass="col-md-4">
+                                    <f:validateLength maximum="25"/>
+                                </ct:floatingLabelInput>
+
+                                <ct:floatingLabelInput id="city"
+                                                       value="#{editAdvertisementBean.ad.city}"
+                                                       label="#{messages.f_label_city_editAdvertisement}"
+                                                       required="true"
+                                                       styleClass="col-md-4">
+                                    <f:validateLength maximum="150"/>
+                                </ct:floatingLabelInput>
+
+                                <ct:floatingLabelInput id="street"
+                                                       value="#{editAdvertisementBean.ad.street}"
+                                                       label="#{messages.f_label_street_editAdvertisement}"
+                                                       styleClass="col-12">
+                                    <f:validateLength maximum="150"/>
+                                </ct:floatingLabelInput>
+                                <ct:floatingLabelInput id="email"
+                                                       value="#{editAdvertisementBean.ad.email}"
+                                                       label="#{messages.f_label_email_editAdvertisement}"
+                                                       required="true"
+                                                       styleClass="col-md-6">
+                                    <f:validateLength maximum="70"/>
+                                    <f:validator validatorId="emailFormatValidator"/>
+                                </ct:floatingLabelInput>
+
+                                <ct:floatingLabelInput id="phoneNumber"
+                                                       value="#{editAdvertisementBean.ad.phoneNumber}"
+                                                       label="#{messages.f_label_phoneNumber_editAdvertisement}"
+                                                       styleClass="col-md-6">
+                                    <f:validateLength maximum="20"/>
+                                </ct:floatingLabelInput>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </div>
+
+                    <div class="col-12 horizontal-divider mb-2"></div>
+
+                    <div class="col-12 d-flex justify-content-between mt-0">
+                        <div>
+                            <comp:confirmButton id="deleteAdButton" forId="deleteDialog"
+                                                value="#{messages.f_button_deleteAdvertisement}"
+                                                styleClass="btn btn-outline-danger"
+                                                rendered="#{editAdvertisementBean.ad.id != 0}"/>
+                        </div>
+                        <div>
+                            <h:commandButton id="submit"
+                                             action="#{editAdvertisementBean.submit()}"
+                                             value="#{messages.f_button_saveAdvertisement}"
+                                             styleClass="btn btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+        <comp:confirmDialog id="deleteDialog"
+                            header="#{messages.f_confirmDeleteHeader_editAdvertisement}"
+                            accept="#{editAdvertisementBean.deleteAdvertisement}"
+                            rejectLabel="#{messages.f_button_abort}"
+                            acceptLabel="#{messages.f_button_delete}">
+            #{messages.f_confirmDeleteMessage_editAdvertisement}
+        </comp:confirmDialog>
+    </ui:define>
+</ui:composition>

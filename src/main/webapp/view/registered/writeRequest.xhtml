@@ -1,0 +1,87 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:o="http://omnifaces.org/ui">
+
+  <f:metadata>
+    <f:viewParam name="id" value="#{writeRequestBean.ad.id}"/>
+    <f:viewAction action="#{writeRequestBean.loadData()}"/>
+  </f:metadata>
+
+  <ui:define name="title">#{messages.f_pageTitle_writeRequest}</ui:define>
+
+  <ui:define name="childContent">
+    <h:panelGroup layout="block" styleClass="container mt-4 text-start w-75">
+      <h:link value="&lt; #{messages.f_go_back}" outcome="/view/anonymous/advertisementDetails"
+              includeViewParams="true">
+        <f:param name="id" value="#{writeRequestBean.ad.id}"/>
+      </h:link>
+      <h2 class="mb-3">
+        <h:outputText
+          value="#{messages.f_heading_writeRequest} #{writeRequestBean.ad.title} (#{writeRequestBean.ad.cost}
+                     #{messages.f_talentPoints_adDetails})"/>
+      </h2>
+      <o:graphicImage styleClass="ad-details-image mb-4"
+                      value="#{writeRequestBean.ad.image}"
+                      dataURI="true"/>
+      <h:panelGroup layout="block" styleClass="row">
+        <h:panelGroup styleClass="col-4">
+          <h4>Ersteller der Anzeige</h4>
+          <h:panelGroup layout="block">
+            <o:graphicImage styleClass="small-avatar-image my-2"
+                            value="#{writeRequestBean.adCreator.avatar}"
+                            rendered="#{not empty writeRequestBean.adCreator.avatar}"
+                            dataURI="true"/>
+          </h:panelGroup>
+          <div>
+            <h:outputText
+              value="#{writeRequestBean.adCreator.nickname} (#{writeRequestBean.adCreator.talentPoints}
+                             #{messages.f_talentPoints_writeRequest})"/>
+          </div>
+          <h:panelGroup layout="block" styleClass="fw-bold mt-3">
+            <h:outputText value="#{messages.f_contact_writeRequest}"/>
+          </h:panelGroup>
+          <div>
+            <h:outputText value="#{messages.f_email_writeRequest}: #{writeRequestBean.adCreator.email}"/>
+          </div>
+          <h:panelGroup id="phone" layout="block" rendered="#{not empty writeRequestBean.adCreator.phone}">
+            <h:outputText value="#{messages.f_phone_writeRequest}: #{writeRequestBean.adCreator.phone}"/>
+          </h:panelGroup>
+        </h:panelGroup>
+        <h:panelGroup styleClass="col-8">
+          <h:form id="writeRequest">
+            <h:panelGroup layout="block" styleClass="mb-3 w-100">
+              <h:outputLabel for="request"
+                             value="#{messages.f_yourRequest_writeRequest}:"
+                             styleClass="form-label"/>
+              <h:inputTextarea id="request"
+                               rows="6"
+                               value="#{writeRequestBean.request.request}"
+                               styleClass="form-control w-100"/>
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="d-flex justify-content-between">
+              <div>
+                <h:button value="#{messages.f_button_goToAdvertisement_writeRequest}"
+                          outcome="/view/anonymous/advertisementDetails"
+                          styleClass="btn btn-outline-secondary mx-0"
+                          includeViewParams="true">
+                  <f:param name="id" value="#{writeRequestBean.ad.id}"/>
+                </h:button>
+              </div>
+              <h:panelGroup id="buttons-panel" layout="block">
+
+                <h:commandButton id="submit" action="#{writeRequestBean.submit()}"
+                                 value="#{writeRequestBean.emailDispatchedForMail ? messages.f_save_anyway : messages.f_button_submitRequest}"
+                                 styleClass="btn btn-primary mx-0">
+                  <f:ajax execute="@form" render="@form"/>
+                </h:commandButton>
+              </h:panelGroup>
+            </h:panelGroup>
+          </h:form>
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:panelGroup>
+  </ui:define>
+</ui:composition>

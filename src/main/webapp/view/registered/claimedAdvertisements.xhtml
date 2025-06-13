@@ -1,0 +1,62 @@
+<ui:composition template="/resources/template/skeleton.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:comp="jakarta.faces.composite/components"
+                xmlns:f="jakarta.faces.core"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:param name="title" value="#{messages.f_claimedAdsHeader}"/>
+
+    <ui:define name="childContent">
+        <h:panelGroup layout="block" styleClass="header-container">
+            <h:outputText value="#{messages.f_claimedAdsHeader}" styleClass="h2"/>
+            <h:panelGroup layout="block" styleClass="button-container">
+                <h:button value="#{messages.f_button_outgoingRequests}" outcome="/view/registered/outgoingRequests"
+                          styleClass="btn btn-secondary"/>
+            </h:panelGroup>
+        </h:panelGroup>
+
+        <h:form id="claimedAds">
+            <comp:dynamicDataTable id="dataTable" dataModel="#{claimedAdvertisementsBean.dataModel}">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{messages.f_imageHeader}" styleClass="tableHeader"/>
+                    </f:facet>
+                    <o:graphicImage class="adImage" value="#{item.image}" dataURI="true"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="ad-title" columnName="#{messages.f_titleHeader}"
+                                               columnIdentifier="title" />
+                    </f:facet>
+                    <h:link value="#{item.title}"
+                            outcome="/view/anonymous/advertisementDetails"
+                            includeViewParams="true" id="ad-link">
+                        <f:param name="id" value="#{item.id}"/>
+                    </h:link>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="ad-costs" columnName="#{messages.f_costHeader}"
+                                               columnIdentifier="cost_in_talent_points" />
+                    </f:facet>
+                    <h:outputText value="#{item.cost}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="ad-postal-code" columnName="#{messages.f_postalCode}"
+                                               columnIdentifier="postal_code" />
+                    </f:facet>
+                    <h:outputText value="#{item.postalCode}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <comp:sortFilterColumn id="ad-city" columnName="#{messages.f_city}" columnIdentifier="city" />
+                    </f:facet>
+                    <h:outputText value="#{item.city}"/>
+                </h:column>
+            </comp:dynamicDataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
